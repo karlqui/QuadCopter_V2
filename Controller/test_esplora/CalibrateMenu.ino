@@ -10,10 +10,10 @@ void setupCalibrateMenu(){
     EsploraTFT.background(0,0,0); //clear screen
     createButton(EsploraTFT.width() - 50, EsploraTFT.height() - 30, 40, 20, "Back", 1, 0);
     EsploraTFT.textSize(1);
-    EsploraTFT.text("Switch 3 -> speed += step", 5, 5);
-    EsploraTFT.text("Switch 1 -> speed -= step", 5, 20);
-    EsploraTFT.text("Switch 4 -> step++", 5, 35);
-    EsploraTFT.text("Switch 2 -> step--", 5, 50);
+    EsploraTFT.text("JOY_UP -> speed += step", 5, 5);
+    EsploraTFT.text("JOY_DOWN -> speed -= step", 5, 20);
+    EsploraTFT.text("JOY_RIGHT -> step++", 5, 35);
+    EsploraTFT.text("JOY_LEFT -> step--", 5, 50);
     EsploraTFT.text("Current speed: ", 5, 75);
     EsploraTFT.text("Current step: ", 5, 90);
     paintSpeed();
@@ -64,7 +64,7 @@ void paintStep(){
 
 void updateVars(int button){
   switch(button){
-    case SWITCH_1:
+    case JOYSTICK_DOWN:
       if(currentSpeed - stepVar > 0)
         currentSpeed-=stepVar;
         RFSerial.println(String(currentSpeed));
@@ -72,19 +72,19 @@ void updateVars(int button){
       paintSpeed();
       delay(10);
     break;
-    case SWITCH_2: 
+    case JOYSTICK_LEFT: 
       if(stepVar>0)
         stepVar--;
       paintStep();
     break;
-    case SWITCH_3: 
+    case JOYSTICK_UP: 
       currentSpeed+=stepVar;
       RFSerial.println(String(currentSpeed));
       sendChar('!');
       paintSpeed();
       delay(10);
     break;
-    case SWITCH_4: 
+    case JOYSTICK_RIGHT: 
       stepVar++;
       paintStep();
     break;
@@ -95,17 +95,17 @@ void updateVars(int button){
 
 void checkCalibrateMenu(){
   int yButton = Esplora.readJoystickSwitch();
-  if(Esplora.readButton(SWITCH_1) == LOW){
-    updateVars(SWITCH_1);
+  if(Esplora.readButton(JOYSTICK_DOWN) == LOW){
+    updateVars(JOYSTICK_DOWN);
   }
-  if(Esplora.readButton(SWITCH_2) == LOW){
-    updateVars(SWITCH_2);
+  if(Esplora.readButton(JOYSTICK_LEFT) == LOW){
+    updateVars(JOYSTICK_LEFT);
   }
-  if(Esplora.readButton(SWITCH_3) == LOW){
-    updateVars(SWITCH_3);
+  if(Esplora.readButton(JOYSTICK_UP) == LOW){
+    updateVars(JOYSTICK_UP);
   }
-  if(Esplora.readButton(SWITCH_4) == LOW){
-    updateVars(SWITCH_4);
+  if(Esplora.readButton(JOYSTICK_RIGHT) == LOW){
+    updateVars(JOYSTICK_RIGHT);
   }
 
   
