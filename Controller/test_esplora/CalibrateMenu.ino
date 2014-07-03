@@ -11,9 +11,10 @@ void setupCalibrateMenu(){
     createButton(EsploraTFT.width() - 50, EsploraTFT.height() - 30, 40, 20, "Back", 1, 0);
     EsploraTFT.textSize(1);
     EsploraTFT.text("JOY_UP -> speed += step", 5, 5);
-    EsploraTFT.text("JOY_DOWN -> speed -= step", 5, 20);
-    EsploraTFT.text("JOY_RIGHT -> step++", 5, 35);
-    EsploraTFT.text("JOY_LEFT -> step--", 5, 50);
+    EsploraTFT.text("JOY_DOWN -> speed -= step", 5, 15);
+    EsploraTFT.text("JOY_RIGHT -> step++", 5, 25);
+    EsploraTFT.text("JOY_LEFT -> step--", 5, 35);
+    EsploraTFT.text("SWITCH 1 -> SAVE TO EEPROM", 5, 45);
     EsploraTFT.text("Current speed: ", 5, 75);
     EsploraTFT.text("Current step: ", 5, 90);
     paintSpeed();
@@ -106,6 +107,12 @@ void checkCalibrateMenu(){
   }
   if(Esplora.readButton(JOYSTICK_RIGHT) == LOW){
     updateVars(JOYSTICK_RIGHT);
+  }
+  if(Esplora.readButton(SWITCH_1) == LOW){
+    saveEEPROM("LIFTOFF", currentSpeed);
+    EsploraTFT.stroke(0,255,0);
+    EsploraTFT.text("SAVED!", 5, 55);
+    EsploraTFT.stroke(0,0,0);
   }
 
   
