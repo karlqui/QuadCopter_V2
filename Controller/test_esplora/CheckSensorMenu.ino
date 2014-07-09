@@ -82,8 +82,16 @@ void setupSensorMenu(bool clearScreen){
   }
   else{
     if(String(readS) != "OFFLINE"){
-    EsploraTFT.text(readS, 60, 50);
+    EsploraTFT.text("Distance: ", 60, 50);
+    if(!clearScreen){
+          EsploraTFT.stroke(0,0,0);
+          EsploraTFT.fill(0,0,0);
+          EsploraTFT.rect(115, 50, 40, 15);
+          EsploraTFT.stroke(255,255,255);
     }
+    EsploraTFT.text(readS, 115, 50);
+    }
+    
     else{
       EsploraTFT.stroke(255,0,0);
       EsploraTFT.text(readS, 60, 50);

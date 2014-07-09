@@ -2,13 +2,19 @@ int currentMenu = 0;
 
 void setupStartMenu(){
   EsploraTFT.background(0,0,0);
-
+  setCurrentMenu(0);
   createButton(10, 5, EsploraTFT.width() - 20, 20, "Start", 1, 0);
   createButton(10, 30, EsploraTFT.width() - 20, 20, "Test Communication", 1, 1);
   createButton(10, 55, EsploraTFT.width() - 20, 20, "Test Sensors", 1, 2);
   createButton(10, 80, EsploraTFT.width() - 20, 20, "Calibrate Lift-off", 1, 3);
   createButton(10, 105, EsploraTFT.width() - 20, 20, "Calibrate MPU and save to EEPROM", 1, 4);
   setCurrentButton(0);
+  runStartMenu();
+}
+void runStartMenu(){
+  while(1){
+    checkMenu();
+  }
 }
 
 void checkMenu(){
@@ -32,7 +38,7 @@ void checkMenu(){
 void menuAction(int id){
   switch(id){
     case 0:
-      //@TODO start quadcopter
+      startCopter();
       break;
     case 1:
       setupCommunicationMenu();

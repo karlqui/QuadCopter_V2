@@ -27,13 +27,6 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if(charAvail()){ 
-    
+
   
-  }
-  else if(Serial.available()){
-      /*char c = Serial.read();
-      mySerial.write(c);*/
-  }
-  checkMenu();
 }

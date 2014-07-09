@@ -2,18 +2,15 @@
 #include "Arduino.h"
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
-#include <SoftwareSerial.h>
 
-
-SoftwareSerial RFSerial(13, 12);
 int timeout = 3000;
 double heading = 0;
 double altitude = 0;
 double temperature = 0;
 long distance = -1;
-double yaw = 0;
-double pitch = 0;
-double roll = 0;
+float yaw = 0;
+float pitch = 0;
+float roll = 0;
 String s9 = "";
 int liftOffSpeed = 0;
 // is used in I2Cdev.htimeout
@@ -30,7 +27,7 @@ int liftOffSpeed = 0;
 //#define PRINT_WORLDACCEL
 //#define PRINT_RF
 //#define PRINT_DISTANCE
-#define PRINT_LIFTOFFSPEED
+//#define PRINT_LIFTOFFSPEED
 //#define PRINT_CAL_PITCH
 //#define PRINT_CAL_ROLL
 void readStringRF(char (&inString)[20], int timeOutDelay);
@@ -50,7 +47,7 @@ void setup() {
   setupDebugSerial();
   
   
-  runCopter();
+  
   
   
   setupMPU6050();
@@ -59,6 +56,7 @@ void setup() {
   setupHC_SR04();
   setupRFSerial();
   mpuBypass(true);
+  runCopter();
   startMenu(); //while the esplora user is still in the start menu -- before 
 }
 

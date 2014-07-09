@@ -8,7 +8,6 @@ void calibrateMotors(){
         readS[i] = '\0';
       readStringRF(readS, timeout);
       if(String(readS) == "BACK"){
-        Serial.println("back");
         break;
       }
       liftOffSpeed = String(readS).toInt();
@@ -18,6 +17,5 @@ void calibrateMotors(){
 #endif
     }
   }
-  Serial.println("launching startmenu");
   startMenu();
 }

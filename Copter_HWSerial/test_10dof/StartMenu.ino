@@ -16,11 +16,11 @@ void startMenu(){
           TempString[i] = '\0';
         
         dtostrf(temperature,1,1,TempString);
-        RFSerial.print(TempString);
+        Serial.print(TempString);
         sendChar('!');
         }
         else{
-           RFSerial.print("OFFLINE!");
+           Serial.print("OFFLINE!");
            
            
         }    
@@ -35,11 +35,11 @@ void startMenu(){
         
         dtostrf(altitude,1,1,TempString);
          Serial.println(TempString);
-        RFSerial.print(TempString);
+        Serial.print(TempString);
         sendChar('!');
         }
         else{
-           RFSerial.print("OFFLINE!");
+           Serial.print("OFFLINE!");
            
            
         }
@@ -50,11 +50,11 @@ void startMenu(){
             TempString[i] = '\0';
           dtostrf(distance,2,0,TempString);
           Serial.println(TempString);
-          RFSerial.print(TempString);
+          Serial.print(TempString);
           sendChar('!');
         }
         else{
-          RFSerial.print("OFFLINE!");
+          Serial.print("OFFLINE!");
         }
        }
        else if(c == 'h') //return heading
@@ -66,11 +66,11 @@ void startMenu(){
             TempString[i] = '\0';
           dtostrf(heading,1,1,TempString);
        
-          RFSerial.print(TempString);
+          Serial.print(TempString);
           sendChar('!');
          }
          else{
-           RFSerial.print("OFFLINE!");
+           Serial.print("OFFLINE!");
          }
        }
        else if(c == 'p') //return pitch
@@ -84,11 +84,11 @@ void startMenu(){
             TempString[i] = '\0';
           dtostrf(pitch,1,1,TempString);
        
-          RFSerial.print(TempString);
+          Serial.print(TempString);
           sendChar('!');
          }
          else{
-           RFSerial.print("OFFLINE!");
+           Serial.print("OFFLINE!");
          }
        }
        else if(c == 'r') //return pitch
@@ -100,21 +100,21 @@ void startMenu(){
             TempString[i] = '\0';
           dtostrf(roll,1,1,TempString);
        
-          RFSerial.print(TempString);
+          Serial.print(TempString);
           sendChar('!');
          }
          else{
-           RFSerial.print("OFFLINE!");
+           Serial.print("OFFLINE!");
          }
        }
        else if(c == 'x'){ // return calibrated x-value (x acc offset)
          sendChar('a');
-         RFSerial.println(String(calibrateMPU_Pitch0()));
+         Serial.println(String(calibrateMPU_Pitch0()));
          sendChar('!');
        }
        else if(c == 'y'){ // return calibrated y-value (y acc offset)
          sendChar('a');
-         RFSerial.println(String(calibrateMPU_Roll0()));
+         Serial.println(String(calibrateMPU_Roll0()));
          sendChar('!');
        }
        else if(c == 'c'){
