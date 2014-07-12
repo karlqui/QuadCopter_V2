@@ -4,7 +4,6 @@ Servo motorX1, motorX2, motorY1, motorY2;
 int X1Speed, X2Speed, Y1Speed, Y2Speed = 0;
 
 
-
 void setupMotors(){
   motorX1.attach(10); //X positive angle	
   motorY1.attach(9); //Y positive angle
@@ -18,45 +17,80 @@ void setupMotors(){
   delay(2000);
 }
 
-void setSpeedX1(int val){ // i promille
-  if(val == 0){
-    motorX1.write(0);
-    return;
+void setSpeedMotor(int motor, int val){ // 0 = x1, 1=x2 , 2= y1, 3 = y2
+  int realVal = 0;
+  if(val > 0)
+    realVal = map(val, 1, 1000, 1185, 2000);
+    
+  if(motor == MOTOR_X1){
+    X1Speed = val;
+    motorX1.writeMicroseconds(realVal);
   }
-  int realVal = map(val, 1, 1000, 1185, 2000);
-  motorX1.writeMicroseconds(realVal);
-}
-void setSpeedX2(int val){ // i promille
-  if(val == 0){
-    motorX2.write(0);
-    return;
+  else if(motor == MOTOR_X2){
+    X2Speed = val;
+    motorX2.writeMicroseconds(realVal);
   }
-  int realVal = map(val, 1, 1000, 1185, 2000);
-  motorX2.writeMicroseconds(realVal);
-}
-void setSpeedY1(int val){ // i promille
-  if(val == 0){
-    motorY1.write(0);
-    return;
+  else if(motor == MOTOR_Y1){
+    Y1Speed = val;
+    motorY1.writeMicroseconds(realVal);
   }
-  int realVal = map(val, 1, 1000, 1185, 2000);
-  motorY1.writeMicroseconds(realVal);
-}
-void setSpeedY2(int val){ // i promille
-  if(val == 0){
-    motorY2.write(0);
-    return;
+  else if(motor == MOTOR_Y2){
+    Y2Speed = val;
+    motorY2.writeMicroseconds(realVal);
   }
-  int realVal = map(val, 1, 1000, 1185, 2000);
-  motorY2.writeMicroseconds(realVal);
 }
 
-void incrSpeed(int val){//@TODO
-  
+
+void incrSpeedMotor(int motor){//@TODO -> 0 = x1, 1 =x2, 2 = y1, 3 = y2
+    int realVal = 0;
+
+    
+    
+  if(motor == MOTOR_X1){
+    X1Speed++;
+    realVal = map(X1Speed, 1, 1000, 1185, 2000);
+    motorX1.writeMicroseconds(realVal);
+  }
+  else if(motor == MOTOR_X2){
+    X2Speed++;
+    realVal = map(X2Speed, 1, 1000, 1185, 2000);
+    motorX2.writeMicroseconds(realVal);
+  }
+  else if(motor == MOTOR_Y1){
+    Y1Speed++;
+    realVal = map(Y1Speed, 1, 1000, 1185, 2000);
+    motorY1.writeMicroseconds(realVal);
+  }
+  else if(motor == MOTOR_Y2){
+    Y2Speed++;
+    realVal = map(Y2Speed, 1, 1000, 1185, 2000);
+    motorY2.writeMicroseconds(realVal);
+  }
 }
 
-void decrSpeed(int val){
-
+void decrSpeedMotor(int motor){//@TODO -> 0 = x1, 1 =x2, 2 = y1, 3 = y2
+    int realVal = 0;
+    
+  if(motor == MOTOR_X1){
+    X1Speed--;
+    realVal = map(X1Speed, 1, 1000, 1185, 2000);
+    motorX1.writeMicroseconds(realVal);
+  }
+  else if(motor == MOTOR_X2){
+    X2Speed--;
+    realVal = map(X2Speed, 1, 1000, 1185, 2000);
+    motorX2.writeMicroseconds(realVal);
+  }
+  else if(motor == MOTOR_Y1){
+    Y1Speed--;
+    realVal = map(Y1Speed, 1, 1000, 1185, 2000);
+    motorY1.writeMicroseconds(realVal);
+  }
+  else if(motor == MOTOR_Y2){
+    Y2Speed--;
+    realVal = map(Y2Speed, 1, 1000, 1185, 2000);
+    motorY2.writeMicroseconds(realVal);
+  }
 }
 
 void setSpeedMotors(int val){
@@ -67,26 +101,3 @@ void setSpeedMotors(int val){
    
 }
 
-void rollLeft(){
-
-}
-
-void rollRight(){
-
-}
-
-void pitchForward(){
-
-}
-
-void pitchBackwards(){
-
-}
-
-void rotateRight(int angle){ 
-  
-}
-
-void rotateLeft(int angle){
-
-}

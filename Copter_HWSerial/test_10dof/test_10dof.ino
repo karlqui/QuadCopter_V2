@@ -3,6 +3,11 @@
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 
+#define MOTOR_X1 0
+#define MOTOR_X2 1
+#define MOTOR_Y1 2
+#define MOTOR_Y2 3
+
 int timeout = 3000;
 double heading = 0;
 double altitude = 0;
