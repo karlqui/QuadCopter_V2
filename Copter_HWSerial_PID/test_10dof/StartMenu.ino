@@ -75,8 +75,8 @@ void startMenu(){
        {
          if(testConnectionMPU()){
            
-           handleInterrupt();
-           updateYawPitchRoll();
+          // handleInterrupt();
+           //updateYawPitchRoll();
 
           for(int i=0; i<10; i++)
             TempString[i] = '\0';
@@ -92,8 +92,8 @@ void startMenu(){
        else if(c == 'r') //return pitch
        {
          if(testConnectionMPU()){
-           handleInterrupt();
-             updateYawPitchRoll();
+    //       handleInterrupt();
+      //       updateYawPitchRoll();
           for(int i=0; i<10; i++)
             TempString[i] = '\0';
           dtostrf(roll,1,1,TempString);

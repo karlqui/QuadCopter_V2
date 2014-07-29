@@ -103,8 +103,8 @@ void setupMPU6050(){
 
 
 
-    // supply your own gyro offsets here, scaled for min sensitivity
-    mpu.setXGyroOffset(220);
+
+    mpu.setXGyroOffset(220); //@TODO CHANGE GYRO OFFSET VALUES
     mpu.setYGyroOffset(76);
     mpu.setZGyroOffset(-85);
     
@@ -139,7 +139,7 @@ void setupMPU6050(){
 }
 
 bool checkInterrupt(){
-  return (!mpuInterrupt && fifoCount < packetSize);
+  return (!mpuInterrupt && fifoCount < packetSize*10); //unless there is an interrupt or 5 packages available
 }
 
 void updateYawPitchRoll(){
@@ -179,7 +179,7 @@ void updateWorldAccel(){
             mpu.dmpGetLinearAccelInWorld(&aaWorld, &aaReal, &q);
             
 #ifdef PRINT_WORLDACCEL 
-            Serial.print("aworld X Y Z\t");
+           / Serial.print("aworld X Y Z\t");
             Serial.print(aaWorld.x);
             Serial.print("\t");
             Serial.print(aaWorld.y);
@@ -194,7 +194,7 @@ bool handleInterrupt(){
     // reset interrupt flag and get INT_STATUS byte
     mpuInterrupt = false;
     mpuIntStatus = mpu.getIntStatus();
-
+    
     // get current FIFO count
     fifoCount = mpu.getFIFOCount();
 
@@ -216,9 +216,6 @@ bool handleInterrupt(){
         // (this lets us immediately read more without waiting for an interrupt)
         fifoCount -= packetSize;
         return false;
-        
-
-
     }
 
 }

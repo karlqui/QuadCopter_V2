@@ -14,7 +14,7 @@ void setupMotors(){
   motorX2.write(10);
   motorY1.write(10);
   motorY2.write(10);
-  delay(5000);
+  delay(3000);
 }
 
 int getSpeedMotor(int motor){
@@ -30,8 +30,13 @@ int getSpeedMotor(int motor){
 
 void setSpeedMotor(int motor, int val){ // 0 = x1, 1=x2 , 2= y1, 3 = y2
   int realVal = 0;
-  if(val > 0)
-    realVal = map(val, 1, 1000, 1048, 2000);
+  
+  if(val < 1)
+    val = 1;
+  else if(val > 1000)
+    val = 1000;
+  
+  realVal = map(val, 1, 1000, 1048, 2000);
     
   if(motor == MOTOR_X1){
     X1Speed = val;
@@ -121,11 +126,7 @@ void decrSpeedMotor(int motor, int val){
   }
 }
 
-void setSpeedMotors(int val){
-   motorX1.writeMicroseconds(val);
-   motorX2.writeMicroseconds(val);
-   motorY1.writeMicroseconds(val);
-   motorY2.writeMicroseconds(val);
-   
-}
+
+
+
 

@@ -6,14 +6,14 @@
 #define MOTOR_Y1 2
 #define MOTOR_Y2 3
 
+
+
 int timeout = 3000;
 double heading = 0;
 double altitude_ = 0;
 double temperature = 0;
 long distance = -1;
-float yaw = 0;
-float pitch = 0;
-float roll = 0;
+
 int liftOffSpeed = 0;
 // is used in I2Cdev.htimeout
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
@@ -35,6 +35,7 @@ int liftOffSpeed = 0;
 void readStringRF(char (&inString)[20], int timeOutDelay);
 
 void setup() {
+
     // join I2C bus (I2Cdev library doesn't do this automatically)
     #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
         Wire.begin();
@@ -46,6 +47,7 @@ void setup() {
   printDebugMessage("Initializing I2C devices...");
   printDebugMessage("Testing device connections...");
    
+  setupPid(); 
   setupBMP180();
   setupHMC5883L();
   setupHC_SR04();

@@ -1,13 +1,11 @@
 //running quadcopter
 void runCopter(){
-  Serial.println("TEST");
   setupMotors();
-  testMode2
-  ();
+  testMode3();
 }
 
-void testMode1(){
-  Serial.println("X1 X2 Y1 Y2");
+/*void testMode1(){
+  
   while(1){
     if(Serial.available() > 0){
       
@@ -27,15 +25,18 @@ void testMode1(){
       setSpeedMotor(MOTOR_Y2, y2);
       setSpeedMotor(MOTOR_X1, x1);
 
-    }
+  /*     motorX1.writeMicroseconds(x1);
+     motorX2.writeMicroseconds(x2);
+     motorY1.writeMicroseconds(y1);
+     motorY2.writeMicroseconds(y2);*/
+/*    }
   }
-}
+}*/
+
+
 float prevHeading;
 float prevRoll, diffRoll;
-float diffRollArr[10];
-float rollArr[10];
-float pitchArr[10];
-float yawArr[10];
+float dist;
 float yawSum = 0;
 float pitchSum = 0;
 float diffRollSum = 0;
@@ -43,54 +44,58 @@ float rollSum = 0;
 int arrIndex = 0;
 float calYaw;
 float prevYaw;
-
-void testMode2(){
+float distArr[2];
+float distSum;
+float baseAlt;
+bool usingBMP = false;
+float prevCalYaw;
+void testMode3(){ //also test balancing algorithm
   calYaw = heading;
+  updateDistance();
+  updateHeading();
+  int updateIndex = 0;
   while(1){
-    while(checkInterrupt()){
-      updateDistance();
+    while(!mpuInterrupt){
+      if(distance != getMaximumRange())
+      {
+        updateDistance();
+        dist = distance;
+        usingBMP = false;
+        
+      }
+      else{
+
+          updateAltitude();
+          if(usingBMP == false)//if just started messuring bmp
+            baseAlt = altitude_;
+          dist = (altitude_) * 1000 + (float)getMaximumRange();
+          if((altitude_) < 0)
+            distance = getMaximumRange() - 1; //start using the ultra-sound sensor 
+          usingBMP = true;
+          updateIndex = 0;
+      }
+
+      
+      prevHeading = heading;
       updateHeading();
+      
+      
     }
-    prevRoll = roll;
-    prevYaw = yaw;
+
     handleInterrupt();
     updateYawPitchRoll();
-    updateWorldAccel();
+    
+    prevCalYaw = calYaw;
+    if(abs(prevHeading - heading) > 100)
+      calYaw = (0.02 * (yaw - prevYaw + calYaw)) + (0.98 * (heading)); //reverse complimentary for quick update on heading
+    else
+      calYaw = (0.98 * (yaw - prevYaw + calYaw)) + (0.02 * (heading)); //simple complimentary filter to get correct but still pretty fast updates on heading changescalcalYawArr
+    if(calYaw < 0 || calYaw > 360) //for safety in case abs(prevYaw - yaw) gets too big
+      calYaw = prevCalYaw;
    
-    diffRoll = roll - prevRoll;
-     
-    diffRollArr[arrIndex] = diffRoll;
-    rollArr[arrIndex] = roll;
-    pitchArr[arrIndex] = pitch;
-    yawArr[arrIndex] = yaw;
-    calYaw = (0.98 * (yaw - prevYaw + calYaw)) + (0.02 * (heading)); //simple complimentary filter to get correct but still pretty fast updates on heading changes
+
+      balance(calYaw, pitch, roll, dist, 0, 0, 0, 100.0);
+
     
-    arrIndex++;
-    
-      if(arrIndex>9){
-        for(int i =0;i < 10; i++){
-          double temp = diffRollArr[i];
-          diffRollSum += temp;
-          rollSum += rollArr[i];
-          pitchSum += pitchArr[i];
-          yawSum += yawArr[i];
-      }
-      rollSum /= 10;
-      pitchSum /= 10;
-      yawSum /= 10;
-      arrIndex = 0;
-      Serial.print("Yaw: " + String(yawSum) + "  ");
-      Serial.print("Pitch: " + String(pitchSum) + "  ");
-      Serial.print("Roll: " + String(rollSum) + "  ");
-      Serial.print("Heading: " + String(heading) + "  ");
-      Serial.print("calYaw: " + String(calYaw) + "  ");
-      Serial.println("Distance: " + String(distance));
-      Serial.println("--------------------------------------------------------------------");
-        
-      diffRollSum = 0;
-      rollSum = 0;
-      pitchSum = 0;
-      yawSum = 0;
-    }
   }
 }
