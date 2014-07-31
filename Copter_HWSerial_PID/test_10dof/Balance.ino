@@ -6,8 +6,8 @@ double SetpointR, InputR, OutputR;
 double SetpointY, InputY, OutputY;
 
 //Define the aggressive and conservative Tuning Parameters
-double aggKp=4, aggKi=0.05, aggKd=0.2;
-double consKp=2, consKi=0.05, consKd=0.1;
+double aggKp=4, aggKi=0.2, aggKd=0.6;
+double consKp=4, consKi=0.1, consKd=0.3;
 
 PID YPID(&InputY, &OutputY, &SetpointY, consKp, consKi, consKd, DIRECT);
 
@@ -29,7 +29,12 @@ void setupPid(){
     YPID.SetSampleTime(5); //200 hz
     
 }
+void setConsParam(double Kp, double Ki, double Kd){
+  consKp = Kp;
+  consKi = Ki;
+  consKd = Kd;
 
+}
 float mapFloat(float x, float in_min, float in_max, float out_min, float out_max)
 {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;

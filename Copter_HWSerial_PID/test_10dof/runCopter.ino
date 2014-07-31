@@ -33,6 +33,12 @@ void runCopter(){
 /*    }
   }
 }*/
+
+union double_type { //union to convert from byte array to double
+    byte b[4];
+    double dval;
+} u;
+
 char RFString[20];
 
 double kalAngleX, kalAngleY, kalAngleZ = 0; // Calculated angle using a Kalman filter
@@ -125,6 +131,53 @@ void testMode3(){ //also test balancing algorithm
           RFString[i] = '\0';
           
         readStringRF(RFString, timeout);
+        //parse string -> the command
+        int i = 0;
+        String command = "";
+        while(RFString[i] != ':'){//check what to do
+          command += RFString[i];
+          i++;
+        }
+        
+        //next is data
+        byte data[10]; //buffer to hold the data
+        
+        if(command == "sp"){ //speed
+          for(int j = 0; i < sizeof(int); i++){
+            data[j] = RFString[i];
+            i++;
+          }
+          int sp = word(data[0], data[1]);
+        }
+        
+        else if(command == "kp"){ //kalman process variable
+          for(int j = 0; i < sizeof(double); i++){
+            data[j] = RFString[i];
+             u.b[j] = data[j];
+            i++;
+          }
+          double kp = u.dval;
+        }
+        
+        else if(command == "ki"){ //kalman integral variable
+          for(int j = 0; i < sizeof(double); i++){
+            data[j] = RFString[i];
+             u.b[j] = data[j];
+            i++;
+          }
+          double ki = u.dval;
+        }
+        
+        else if(command == "kd"){ //kalman derivative variable
+          for(int j = 0; i < sizeof(double); i++){
+            data[j] = RFString[i];
+             u.b[j] = data[j];
+            i++;
+          }
+          double kd = u.dval;
+        }
+        
+        
         int motorsSpeed = String(RFString).toInt();
         if(motorsSpeed > 0 && motorsSpeed <= 1000){ //increase
           speedOffset = motorsSpeed;
