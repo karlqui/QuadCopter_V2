@@ -8,7 +8,7 @@ void runCopter(){
   testMode3();
 }
 
-void testMode2(){
+/*void testMode2(){
   EsploraTFT.background(0,0,0);
   EsploraTFT.text("SWITCH 1 -> MOTOR_X1++", 5,5);
   EsploraTFT.text("SWITCH 2 -> MOTOR_X2++", 5,15);
@@ -90,47 +90,124 @@ void testMode2(){
     
   }
 
-}
+}*/
 void testMode3(){
   int motorOffset = 0;
+  double kp, ki, kd = 0.0;
+  bool isIncr = true;
   EsploraTFT.background(0,0,0);
-  EsploraTFT.text("SWITCH_3 -> increase speed", 5,5);
-  EsploraTFT.text("SWITCH_1 -> decrease speed", 5,20);
-  EsploraTFT.text("Current speed:", 5,60);
-  sTemp = String(motorOffset );
+  EsploraTFT.text("SWITCH_1 -> increase kp", 5,5);
+  EsploraTFT.text("SWITCH_2 -> increase ki", 5,15);
+  EsploraTFT.text("SWITCH_3 -> increase kd", 5,25);
+  EsploraTFT.text("SWITCH_4 -> change incr/decr", 5,35);
+  EsploraTFT.text("JOY_UP -> increase speed", 5,45);
+  EsploraTFT.text("JOW_DOWN -> decrease speed", 5,55);
+  
+  EsploraTFT.text("Current speed:", 5,70);
+  EsploraTFT.text("kp:", 5, 85);
+  EsploraTFT.text("ki:", 5, 95);
+  EsploraTFT.text("kd:", 5, 105);
+    
+ 
+  for(int i=0; i<10; i++)
+    sBuff[i] = '\0';
+ 
+  sTemp = String(motorOffset);
   sTemp.toCharArray(sBuff, 10);
   EsploraTFT.stroke(0,255,0);
-  EsploraTFT.text(sBuff, 90, 60);
+  EsploraTFT.text(sBuff, 90, 70);
+  
+  for(int i=0; i<10; i++)
+    sBuff[i] = '\0';
+  
+  sTemp = String(kp);
+  sTemp.toCharArray(sBuff, 10);
+  EsploraTFT.stroke(0,255,0);
+  EsploraTFT.text(sBuff, 90, 85);
+  
+  for(int i=0; i<10; i++)
+    sBuff[i] = '\0';
+  
+  sTemp = String(ki);
+  sTemp.toCharArray(sBuff, 10);
+  EsploraTFT.stroke(0,255,0);
+  EsploraTFT.text(sBuff, 90, 95);
+  
+  for(int i=0; i<10; i++)
+    sBuff[i] = '\0';
+  
+  sTemp = String(kd);
+  sTemp.toCharArray(sBuff, 10);
+  EsploraTFT.stroke(0,255,0);
+  EsploraTFT.text(sBuff, 90, 105);
   
   while(1){
     if(Esplora.readButton(SWITCH_1) == LOW){
-      motorOffset--;
-      if(motorOffset < 0)
-        motorOffset = 0;
-      RFSerial.flush();
-      RFSerial.print(String(motorOffset) + "!");
-      sTemp = String(motorOffset);
-      sTemp.toCharArray(sBuff, 10);
+      if(isIncr)
+        kp+=0.01;
+      else
+        kp-=0.01;
+        
       EsploraTFT.stroke(0,0,0);
       EsploraTFT.fill(0,0,0);
       EsploraTFT.rect(90, 60, 100, 10);
       EsploraTFT.stroke(0,255,0);
-      EsploraTFT.text(sBuff, 90, 60);
-      delay(50);
     }
-    if(Esplora.readButton(SWITCH_3) == LOW){
+    else if(Esplora.readButton(SWITCH_2) == LOW){
+      if(isIncr)
+        ki+=0.01;
+      else
+        kp-=0.01;
+    }
+    else if(Esplora.readButton(SWITCH_3) == LOW){
+      if(isIncr)
+        kd+=0.01;
+      else
+        kd-=0.01;
+      
+    }
+    else if(Esplora.readButton(SWITCH_4) == LOW){
+      isIncr = !isIncr;
+    }
+    else if(Esplora.readButton(JOYSTICK_UP) == LOW){
       motorOffset++;
       if(motorOffset > 1000)
         motorOffset = 1000;
       RFSerial.flush();
-      RFSerial.print(String(motorOffset) + "!");
+      RFSerial.print("sp:");
+      RFSerial.write(highByte(motorOffset));
+      RFSerial.write(lowByte(motorOffset));
+      RFSerial.print("!");
+      
       sTemp = String(motorOffset);
       sTemp.toCharArray(sBuff, 10);
       EsploraTFT.stroke(0,0,0);
       EsploraTFT.fill(0,0,0);
       EsploraTFT.rect(90, 60, 100, 10);
       EsploraTFT.stroke(0,255,0);
-      EsploraTFT.text(sBuff, 90, 60);
+      EsploraTFT.text(sBuff, 90, 70);
+      delay(50);
+    }
+    else if(Esplora.readButton(JOYSTICK_DOWN) == LOW){
+      motorOffset--;
+      if(motorOffset < 0)
+        motorOffset = 0;
+      
+      for(int i=0; i<10; i++)
+        sBuff[i] = '\0';  
+      
+      RFSerial.flush();
+      RFSerial.print("sp:");
+      RFSerial.write(highByte(motorOffset));
+      RFSerial.write(lowByte(motorOffset));
+      RFSerial.print("!");
+      sTemp = String(motorOffset);
+      sTemp.toCharArray(sBuff, 10);
+      EsploraTFT.stroke(0,0,0);
+      EsploraTFT.fill(0,0,0);
+      EsploraTFT.rect(90, 60, 100, 10);
+      EsploraTFT.stroke(0,255,0);
+      EsploraTFT.text(sBuff, 90, 70);
       delay(50);
     }
   }

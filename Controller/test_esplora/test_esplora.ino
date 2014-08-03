@@ -17,9 +17,7 @@ void setup() {
     EsploraTFT.background(0,0,0);
     Serial.begin(9600);
     setupRFSerial();
-    EsploraTFT.stroke(255,255,255);
-  // static text
-  EsploraTFT.text("Received char",0,0);
+  
   
   setupStartMenu();
   
