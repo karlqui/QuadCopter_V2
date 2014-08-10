@@ -40,7 +40,7 @@ union double_type { //union to convert from byte array to double
 } u;
 
 char RFString[20];
-
+double kp, ki, kd;
 double kalAngleX, kalAngleY, kalAngleZ = 0; // Calculated angle using a Kalman filter
 
 int speedOffset;
@@ -138,52 +138,50 @@ void testMode3(){ //also test balancing algorithm
           command += RFString[i];
           i++;
         }
-        
+        i++;
         //next is data
         byte data[10]; //buffer to hold the data
         
         if(command == "sp"){ //speed
-          for(int j = 0; i < sizeof(int); i++){
+          for(int j = 0; j < sizeof(int); j++){
             data[j] = RFString[i];
             i++;
           }
-          int sp = word(data[0], data[1]);
+          speedOffset = word(data[0], data[1]);
+          
         }
         
         else if(command == "kp"){ //kalman process variable
-          for(int j = 0; i < sizeof(double); i++){
+          for(int j = 0; j < sizeof(double); j++){
             data[j] = RFString[i];
              u.b[j] = data[j];
             i++;
           }
-          double kp = u.dval;
+          if(abs(kp - u.dval) <0.20 || kp == 0) //fail safe
+            kp = u.dval;
         }
         
         else if(command == "ki"){ //kalman integral variable
-          for(int j = 0; i < sizeof(double); i++){
+          for(int j = 0; j < sizeof(double); j++){
             data[j] = RFString[i];
              u.b[j] = data[j];
             i++;
           }
-          double ki = u.dval;
+          if(abs(ki - u.dval) <0.20 || ki == 0)//fail safe
+            ki = u.dval;
         }
         
         else if(command == "kd"){ //kalman derivative variable
-          for(int j = 0; i < sizeof(double); i++){
+          for(int j = 0; j < sizeof(double); j++){
             data[j] = RFString[i];
              u.b[j] = data[j];
             i++;
           }
-          double kd = u.dval;
+          if(abs(kd - u.dval) <0.20 || kd == 0)//fail safe
+            kd = u.dval;
         }
-        
-        
-        int motorsSpeed = String(RFString).toInt();
-        if(motorsSpeed > 0 && motorsSpeed <= 1000){ //increase
-          speedOffset = motorsSpeed;
-          Serial.println(speedOffset);
-          Serial.println(getSpeedMotor(MOTOR_X1));
-        }
+        setConsParam(kp, ki, kd); //update PID param
+     
         flushRF();
       }
       

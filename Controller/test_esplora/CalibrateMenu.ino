@@ -4,7 +4,7 @@ String buff = "";
 char charBuff[10];
 void setupCalibrateMenu(){
   sendChar('c');
-  char c = readCharTimeout(timeout);
+  /*char c = readCharTimeout(timeout);
   if(c == 'a') //acknowledge
   {
     EsploraTFT.background(0,0,0); //clear screen
@@ -29,7 +29,7 @@ void setupCalibrateMenu(){
     EsploraTFT.textSize(1);
     EsploraTFT.stroke(255,255,255);
   }
-
+  */
 }
 
 void paintSpeed(){

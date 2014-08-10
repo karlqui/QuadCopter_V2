@@ -33,7 +33,6 @@ void setConsParam(double Kp, double Ki, double Kd){
   consKp = Kp;
   consKi = Ki;
   consKd = Kd;
-
 }
 float mapFloat(float x, float in_min, float in_max, float out_min, float out_max)
 {

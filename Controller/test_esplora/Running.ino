@@ -95,7 +95,12 @@ void testMode3(){
   int motorOffset = 0;
   double kp, ki, kd = 0.0;
   bool isIncr = true;
+  union double_type { //union to convert from byte array to double
+    byte b[4];
+    double dval;
+  } u;
   EsploraTFT.background(0,0,0);
+  EsploraTFT.stroke(255,255,255);
   EsploraTFT.text("SWITCH_1 -> increase kp", 5,5);
   EsploraTFT.text("SWITCH_2 -> increase ki", 5,15);
   EsploraTFT.text("SWITCH_3 -> increase kd", 5,25);
@@ -147,27 +152,102 @@ void testMode3(){
         kp+=0.01;
       else
         kp-=0.01;
+      
+      if(kp < 0)
+        kp=0;
         
       EsploraTFT.stroke(0,0,0);
       EsploraTFT.fill(0,0,0);
-      EsploraTFT.rect(90, 60, 100, 10);
+      EsploraTFT.rect(90, 85, 100, 10);
       EsploraTFT.stroke(0,255,0);
+      for(int i=0; i<10; i++)
+        sBuff[i] = '\0';
+      sTemp = String(kp);
+      sTemp.toCharArray(sBuff, 10);
+      EsploraTFT.text(sBuff, 90, 85);
+      u.dval = kp;
+      RFSerial.print("kp:");
+      RFSerial.write(u.b[0]);
+      RFSerial.write(u.b[1]);
+      RFSerial.write(u.b[2]);
+      RFSerial.write(u.b[3]);
+      RFSerial.print("!");
+      delay(50);
     }
     else if(Esplora.readButton(SWITCH_2) == LOW){
       if(isIncr)
         ki+=0.01;
       else
-        kp-=0.01;
+        ki-=0.01;
+      
+      if(ki < 0)
+        ki=0;
+        
+      EsploraTFT.stroke(0,0,0);
+      EsploraTFT.fill(0,0,0);
+      EsploraTFT.rect(90, 95, 100, 10);
+      EsploraTFT.stroke(0,255,0);
+      for(int i=0; i<10; i++)
+        sBuff[i] = '\0';
+      sTemp = String(ki);
+      sTemp.toCharArray(sBuff, 10);
+      EsploraTFT.text(sBuff, 90, 95);
+      u.dval = ki;
+      RFSerial.print("ki:");
+      RFSerial.write(u.b[0]);
+      RFSerial.write(u.b[1]);
+      RFSerial.write(u.b[2]);
+      RFSerial.write(u.b[3]);
+      RFSerial.print("!");
+      delay(50);
     }
     else if(Esplora.readButton(SWITCH_3) == LOW){
       if(isIncr)
         kd+=0.01;
       else
         kd-=0.01;
+        
+      if(kd < 0)
+        kd=0;
       
+      EsploraTFT.stroke(0,0,0);
+      EsploraTFT.fill(0,0,0);
+      EsploraTFT.rect(90, 105, 100, 10);
+      EsploraTFT.stroke(0,255,0);
+      for(int i=0; i<10; i++)
+        sBuff[i] = '\0';
+      sTemp = String(kd);
+      sTemp.toCharArray(sBuff, 10);
+      EsploraTFT.text(sBuff, 90, 105);
+      u.dval = kd;
+      RFSerial.print("kd:");
+      RFSerial.write(u.b[0]);
+      RFSerial.write(u.b[1]);
+      RFSerial.write(u.b[2]);
+      RFSerial.write(u.b[3]);
+      RFSerial.print("!");
+      delay(50);
     }
     else if(Esplora.readButton(SWITCH_4) == LOW){
       isIncr = !isIncr;
+      
+      EsploraTFT.stroke(0,0,0);
+      EsploraTFT.fill(0,0,0);
+      EsploraTFT.rect(70, 5, 55, 10);
+      EsploraTFT.rect(70, 15, 55, 10);
+      EsploraTFT.rect(70, 25, 55, 10);
+      EsploraTFT.stroke(255,255,255);
+      if(isIncr){
+        EsploraTFT.text("increase", 77,5);
+        EsploraTFT.text("increase", 77,15);
+        EsploraTFT.text("increase", 77,25);
+      }
+      else{
+        EsploraTFT.text("decrease", 77,5);
+        EsploraTFT.text("decrease", 77,15);
+        EsploraTFT.text("decrease", 77,25);
+      }
+      delay(100);
     }
     else if(Esplora.readButton(JOYSTICK_UP) == LOW){
       motorOffset++;
@@ -183,7 +263,7 @@ void testMode3(){
       sTemp.toCharArray(sBuff, 10);
       EsploraTFT.stroke(0,0,0);
       EsploraTFT.fill(0,0,0);
-      EsploraTFT.rect(90, 60, 100, 10);
+      EsploraTFT.rect(90, 70, 100, 10);
       EsploraTFT.stroke(0,255,0);
       EsploraTFT.text(sBuff, 90, 70);
       delay(50);
@@ -205,7 +285,7 @@ void testMode3(){
       sTemp.toCharArray(sBuff, 10);
       EsploraTFT.stroke(0,0,0);
       EsploraTFT.fill(0,0,0);
-      EsploraTFT.rect(90, 60, 100, 10);
+      EsploraTFT.rect(90, 7y0, 100, 10);
       EsploraTFT.stroke(0,255,0);
       EsploraTFT.text(sBuff, 90, 70);
       delay(50);
